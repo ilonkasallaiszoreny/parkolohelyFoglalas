@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ParkingSpot {
+  id           String        @id @default(uuid())
+  code         String        @unique // e.g. P-101, P-102
+  name         String        // e.g. "A1 - Standard"
+  type         String        @default("STANDARD") // STANDARD, EV_CHARGING, HANDICAPPED, VIP
+  location     String        // e.g. "Floor 1 - Zone A"
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+}
+
+model Reservation {
+  id            String      @id @default(uuid())
+  spotId        String
+  spot          ParkingSpot @relation(fields: [spotId], references: [id], onDelete: Cascade)
+  requesterName String
+  licensePlate  String?
+  startTime     DateTime
+  endTime       DateTime
+  status        String      @default("CONFIRMED") // CONFIRMED, CANCELLED
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([spotId, startTime, endTime, status])
+}
