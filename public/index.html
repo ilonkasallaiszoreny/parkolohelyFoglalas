@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parkolóhely Foglalási Rendszer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-group">
+        <div class="logo-icon">🚗</div>
+        <div>
+          <h1>Parkolóhely Foglalási Rendszer</h1>
+          <p class="subtitle">Intelligens parkolásmenedzsment & ütközésmentes foglalás</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/api-docs" target="_blank" class="btn btn-secondary">
+          <span class="icon">📖</span> API Swagger Doksi
+        </a>
+        <button id="openBookingModalBtn" class="btn btn-primary">
+          <span class="icon">➕</span> Új Foglalás
+        </button>
+      </div>
+    </header>
+
+    <!-- Stat Cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🅿️</div>
+        <div class="stat-info">
+          <span class="stat-value" id="totalSpotsCount">0</span>
+          <span class="stat-label">Összes Parkolóhely</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-info">
+          <span class="stat-value" id="evSpotsCount">0</span>
+          <span class="stat-label">EV Töltőállomás</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <span class="stat-value" id="activeBookingsCount">0</span>
+          <span class="stat-label">Aktív Foglalások</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Section: Spot Grid & Filters -->
+    <main class="main-content">
+      <div class="section-header">
+        <h2>Parkolóhelyek és Foglaltsági Állapot</h2>
+        <div class="filter-group">
+          <button class="filter-btn active" data-type="ALL">Mind</button>
+          <button class="filter-btn" data-type="STANDARD">Normál</button>
+          <button class="filter-btn" data-type="EV_CHARGING">⚡ EV Töltő</button>
+          <button class="filter-btn" data-type="HANDICAPPED">♿ Mozgáskorlátozott</button>
+          <button class="filter-btn" data-type="VIP">⭐ VIP</button>
+        </div>
+      </div>
+
+      <div id="spotsGrid" class="spots-grid">
+        <!-- Dynamic spot cards generated here -->
+      </div>
+
+      <!-- Reservations Table Section -->
+      <section class="reservations-section">
+        <div class="section-header">
+          <h2>Rendszer Foglalások Listája</h2>
+          <div class="table-actions">
+            <select id="statusFilter" class="select-input">
+              <option value="ALL">Minden státusz</option>
+              <option value="CONFIRMED" selected>Csak megerősített</option>
+              <option value="CANCELLED">Csak lemondott</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Hely</th>
+                <th>Kérelmező</th>
+                <th>Rendszám</th>
+                <th>Kezdő Időpont</th>
+                <th>Záró Időpont</th>
+                <th>Státusz</th>
+                <th>Művelet</th>
+              </tr>
+            </thead>
+            <tbody id="reservationsTableBody">
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Parkolóhely Foglalása</h3>
+          <button id="closeModalBtn" class="close-btn">&times;</button>
+        </div>
+        <form id="bookingForm" class="modal-body">
+          <div id="formAlert" class="alert hidden"></div>
+
+          <div class="form-group">
+            <label for="modalSpotSelect">Válassz parkolóhelyet *</label>
+            <select id="modalSpotSelect" class="form-control" required>
+              <!-- Dynamic spot options -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="modalRequester">Kérelmező Neve *</label>
+            <input type="text" id="modalRequester" class="form-control" placeholder="Pl. Kovács Péter" required>
+          </div>
+
+          <div class="form-group">
+            <label for="modalLicensePlate">Rendszám (Opcionális)</label>
+            <input type="text" id="modalLicensePlate" class="form-control" placeholder="Pl. ABC-123">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="modalStartTime">Kezdő időpont *</label>
+              <input type="datetime-local" id="modalStartTime" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="modalEndTime">Záró időpont *</label>
+              <input type="datetime-local" id="modalEndTime" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="cancelModalBtn" class="btn btn-secondary">Mégse</button>
+            <button type="submit" class="btn btn-primary" id="submitBookingBtn">Foglalás Rögzítése</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
