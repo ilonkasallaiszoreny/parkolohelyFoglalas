@@ -1,5 +1,3 @@
-# Multi-stage Dockerfile for production-ready deployment
-
 # 1. Build Stage
 FROM node:24-alpine AS builder
 
@@ -24,14 +22,11 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV DATABASE_URL="file:./dev.db"
 
-COPY package*.json ./
-RUN npm ci --only=production --legacy-peer-deps
-
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 
