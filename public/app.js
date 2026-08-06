@@ -37,7 +37,14 @@ function setupEventListeners() {
     });
   });
 
-  // Table status filter
+  // Table filters
+  const spotFilterSelect = document.getElementById('spotFilter');
+  if (spotFilterSelect) {
+    spotFilterSelect.addEventListener('change', () => {
+      renderReservations();
+    });
+  }
+
   document.getElementById('statusFilter').addEventListener('change', () => {
     renderReservations();
   });
@@ -133,9 +140,14 @@ function renderSpots() {
         </div>
         ${activeResNow ? `<small style="color: var(--text-muted);">${activeResNow.requesterName}</small>` : ''}
       </div>
-      <button class="btn btn-secondary spot-action-btn" onclick="openBookingModal('${spot.id}')">
-        Foglalás erről a helyről
-      </button>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.85rem;">
+        <button class="btn btn-secondary" style="flex: 1; font-size: 0.82rem; padding: 0.5rem;" onclick="filterTableBySpot('${spot.id}')">
+          📋 Foglalások
+        </button>
+        <button class="btn btn-primary" style="flex: 1.2; font-size: 0.82rem; padding: 0.5rem;" onclick="openBookingModal('${spot.id}')">
+          ➕ Foglalás
+        </button>
+      </div>
     `;
     container.appendChild(card);
   });
@@ -147,9 +159,18 @@ function renderReservations() {
   tbody.innerHTML = '';
 
   const filterStatus = document.getElementById('statusFilter').value;
-  const filtered = filterStatus === 'ALL'
-    ? allReservations
-    : allReservations.filter(r => r.status === filterStatus);
+  const spotFilterSelect = document.getElementById('spotFilter');
+  const selectedSpotId = spotFilterSelect ? spotFilterSelect.value : 'ALL';
+
+  let filtered = allReservations;
+
+  if (selectedSpotId !== 'ALL') {
+    filtered = filtered.filter(r => r.spotId === selectedSpotId);
+  }
+
+  if (filterStatus !== 'ALL') {
+    filtered = filtered.filter(r => r.status === filterStatus);
+  }
 
   if (filtered.length === 0) {
     tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">Nincs rögzített foglalás a megadott szűrés szerint.</td></tr>`;
@@ -185,15 +206,43 @@ function renderReservations() {
   });
 }
 
+// Filter table specifically to one spot and scroll down smoothly
+window.filterTableBySpot = function(spotId) {
+  const spotFilterSelect = document.getElementById('spotFilter');
+  if (spotFilterSelect) {
+    spotFilterSelect.value = spotId;
+    renderReservations();
+
+    const tableSection = document.querySelector('.reservations-section');
+    if (tableSection) {
+      tableSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+};
+
 function populateSpotSelectOptions() {
   const select = document.getElementById('modalSpotSelect');
-  select.innerHTML = '';
-  allSpots.forEach(spot => {
-    const opt = document.createElement('option');
-    opt.value = spot.id;
-    opt.textContent = `${spot.code} - ${spot.name} (${spot.location})`;
-    select.appendChild(opt);
-  });
+  const filterSelect = document.getElementById('spotFilter');
+
+  if (select) {
+    select.innerHTML = '';
+    allSpots.forEach(spot => {
+      const opt = document.createElement('option');
+      opt.value = spot.id;
+      opt.textContent = `${spot.code} - ${spot.name} (${spot.location})`;
+      select.appendChild(opt);
+    });
+  }
+
+  if (filterSelect) {
+    filterSelect.innerHTML = `<option value="ALL">Minden parkolóhely</option>`;
+    allSpots.forEach(spot => {
+      const opt = document.createElement('option');
+      opt.value = spot.id;
+      opt.textContent = `${spot.code} - ${spot.name}`;
+      filterSelect.appendChild(opt);
+    });
+  }
 }
 
 function populateDefaultModalTimes() {

@@ -18,10 +18,23 @@ export class SpotService {
       where: { id },
       include: {
         reservations: {
-          where: { status: 'CONFIRMED' },
           orderBy: { startTime: 'asc' },
         },
       },
+    });
+  }
+
+  static async getSpotReservations(id: string) {
+    const spot = await prisma.parkingSpot.findUnique({
+      where: { id },
+    });
+    if (!spot) {
+      throw new Error('A parkolóhely nem található.');
+    }
+    return prisma.reservation.findMany({
+      where: { spotId: id },
+      include: { spot: true },
+      orderBy: { startTime: 'asc' },
     });
   }
 

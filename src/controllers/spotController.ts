@@ -25,6 +25,16 @@ export class SpotController {
     }
   }
 
+  static async getSpotReservations(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id as string;
+      const reservations = await SpotService.getSpotReservations(id);
+      res.json({ success: true, count: reservations.length, data: reservations });
+    } catch (error: any) {
+      res.status(404).json({ success: false, error: error.message });
+    }
+  }
+
   static async createSpot(req: Request, res: Response, next: NextFunction) {
     try {
       const { code, name, type, location } = req.body;

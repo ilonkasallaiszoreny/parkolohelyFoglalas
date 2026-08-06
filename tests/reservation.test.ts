@@ -28,19 +28,30 @@ describe('Parkolóhely-foglalás Integration & Unit Tests', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.data.every((s: any) => s.type === 'EV_CHARGING')).toBe(true);
     });
+
+    it('should query reservations for a specific parking spot via GET /api/spots/:id/reservations', async () => {
+      const spot = await prisma.parkingSpot.findFirst();
+      const res = await request(app).get(`/api/spots/${spot!.id}/reservations`);
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(Array.isArray(res.body.data)).toBe(true);
+    });
   });
 
   describe('POST /api/reservations - Overlap & Reservation Logic', () => {
     let testSpotId: string;
 
     beforeAll(async () => {
+      await prisma.reservation.deleteMany({
+        where: { requesterName: { in: ['Teszt Elek', 'Másik Béla', 'Törlés Teszt'] } }
+      });
       const spot = await prisma.parkingSpot.findFirst();
       testSpotId = spot!.id;
     });
 
     it('should successfully create a valid non-overlapping reservation', async () => {
-      const startTime = new Date('2030-01-01T10:00:00.000Z').toISOString();
-      const endTime = new Date('2030-01-01T14:00:00.000Z').toISOString();
+      const startTime = new Date('2035-01-01T10:00:00.000Z').toISOString();
+      const endTime = new Date('2035-01-01T14:00:00.000Z').toISOString();
 
       const res = await request(app)
         .post('/api/reservations')
@@ -59,8 +70,8 @@ describe('Parkolóhely-foglalás Integration & Unit Tests', () => {
     });
 
     it('should reject overlapping reservation (same time range) with HTTP 409', async () => {
-      const startTime = new Date('2030-01-01T11:00:00.000Z').toISOString();
-      const endTime = new Date('2030-01-01T13:00:00.000Z').toISOString();
+      const startTime = new Date('2035-01-01T11:00:00.000Z').toISOString();
+      const endTime = new Date('2035-01-01T13:00:00.000Z').toISOString();
 
       const res = await request(app)
         .post('/api/reservations')
@@ -78,8 +89,8 @@ describe('Parkolóhely-foglalás Integration & Unit Tests', () => {
     });
 
     it('should reject invalid time range where startTime >= endTime', async () => {
-      const startTime = new Date('2030-01-01T15:00:00.000Z').toISOString();
-      const endTime = new Date('2030-01-01T14:00:00.000Z').toISOString();
+      const startTime = new Date('2035-01-01T15:00:00.000Z').toISOString();
+      const endTime = new Date('2035-01-01T14:00:00.000Z').toISOString();
 
       const res = await request(app)
         .post('/api/reservations')
@@ -105,8 +116,8 @@ describe('Parkolóhely-foglalás Integration & Unit Tests', () => {
         data: {
           spotId: spot!.id,
           requesterName: 'Törlés Teszt',
-          startTime: new Date('2031-05-01T10:00:00Z'),
-          endTime: new Date('2031-05-01T12:00:00Z'),
+          startTime: new Date('2036-05-01T10:00:00Z'),
+          endTime: new Date('2036-05-01T12:00:00Z'),
           status: 'CONFIRMED',
         },
       });

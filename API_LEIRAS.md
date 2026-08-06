@@ -63,6 +63,30 @@ Egy konkrét parkolóhely adatai a hozzá tartozó aktív foglalásokkal együtt
 
 ---
 
+### `GET /api/spots/:id/reservations`
+Egy konkrét parkolóhelyhez tartozó összes foglalás lekérdezése.
+
+**Minta Válasz (200 OK):**
+```json
+{
+  "success": true,
+  "count": 1,
+  "data": [
+    {
+      "id": "a91b2c3d-...",
+      "spotId": "c8d0e74f-...",
+      "requesterName": "Kovács Péter",
+      "licensePlate": "ABC-123",
+      "startTime": "2026-08-06T09:00:00.000Z",
+      "endTime": "2026-08-06T17:00:00.000Z",
+      "status": "CONFIRMED"
+    }
+  ]
+}
+```
+
+---
+
 ### `POST /api/spots`
 Új parkolóhely rögzítése.
 

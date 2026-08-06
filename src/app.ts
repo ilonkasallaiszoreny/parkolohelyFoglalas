@@ -72,11 +72,23 @@ const swaggerDocument = {
         },
       },
     },
+    '/api/spots/{id}/reservations': {
+      get: {
+        summary: 'Egy adott parkolóhely foglalásainak lekérdezése',
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'string' }, description: 'Parkolóhely ID' },
+        ],
+        responses: {
+          200: { description: 'Sikeres válasz a parkolóhely foglalásaival' },
+          404: { description: 'Parkolóhely nem található' },
+        },
+      },
+    },
     '/api/reservations': {
       get: {
         summary: 'Foglalások lekérdezése szűréssel',
         parameters: [
-          { name: 'spotId', in: 'query', schema: { type: 'string' }, description: 'Parkolóhely ID' },
+          { name: 'spotId', in: 'query', schema: { type: 'string' }, description: 'Parkolóhely ID szerinti szűrés' },
           { name: 'from', in: 'query', schema: { type: 'string', format: 'date-time' }, description: 'Kezdő dátum szűrő' },
           { name: 'to', in: 'query', schema: { type: 'string', format: 'date-time' }, description: 'Záró dátum szűrő' },
           { name: 'status', in: 'query', schema: { type: 'string', enum: ['CONFIRMED', 'CANCELLED'] } },
