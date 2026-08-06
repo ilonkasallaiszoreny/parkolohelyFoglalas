@@ -23,11 +23,47 @@ A megoldás során a legnagyobb kihívást az átfedő foglalási időintervallu
 ### Alkalmazott AI eszköz:
 - **Google Antigravity AI Agent (Gemini 3.6 Flash / Pro)**
 
-### Prompt History / Interakciós Napló:
-1. **Prompt 1:** `olvasd be a könyvtár tartalmát`
-   - *AI válasz:* Beolvasta a `parkolohely-foglalas-hazi-feladat.md` fájlt és összefoglalta a feladat elvárásait.
-2. **Prompt 2:** `igen. Let's do it!`
-   - *AI válasz:* Megkérdezte a választandó technológiai stacket, majd kiépítette a teljes rendszert (Node.js, Express, TypeScript, Prisma SQLite, Jest tesztek, Docker, Web Dashboard, Rendszerterv, API leírás, Kezikönyv és Döntési napló).
+### Az AI asszisztens szerepe és integrációja a fejlesztésbe:
+Az AI eszközt párprogramozóként (Pair Programmer) használtuk a fejlesztési folyamat során. Az AI felelt a projekt vázának felépítéséért, a típusbiztos architektúra tervezéséért, a Docker konténerizációért, az automatizált Jest tesztek megírásáért, valamint a felmerülő kompatibilitási és rendszer-hibák diagnosztizálásáért és javításáért.
 
 ---
-*Készült: 2026.08.05.*
+
+### Részletes Prompt History és Iterációs Napló:
+
+1. **Prompt 1 (Feladatbeolvasás & Rendszerelemzés):**
+   - **Kérés:** `olvasd be a könyvtár tartalmát`
+   - **AI Tevékenység & Válasz:** Az AI felderítette a munkakönyvtárat, beolvasta a `parkolohely-foglalas-hazi-feladat.md` specifikációs fájlt, és strukturált magyar nyelvű összefoglalót készített a követelményekről (foglalási ütközésvizsgálat, Docker egyparanccsal indítás, mellékletek).
+
+2. **Prompt 2 (Projekt Kezdeményezése):**
+   - **Kérés:** `igen. Let's do it!`
+   - **AI Tevékenység & Válasz:** Az AI felmérte a rendszerre telepített eszközöket (Node.js, Python, Docker, Git), majd egy interaktív választási opciót kínált a technológiai stack meghatározására.
+
+3. **Prompt 3 (Stack Kiválasztása):**
+   - **Kérés:** *(Kiválasztva)* `Node.js + TypeScript (Express, Prisma/SQLite, Jest, Docker, Web UI & Swagger)`
+   - **AI Tevékenység & Válasz:** Az AI felépítette az alkalmazás teljes architektúráját:
+     - Prisma SQLite adatbázis séma felépítése.
+     - `SpotService` és `ReservationService` atomikus tranzakciós ütközésvizsgálattal (`prisma.$transaction`).
+     - REST API kontrollerek és Express útvonalak.
+     - Glassmorphic sötét témájú Web Dashboard UI (`public/index.html`, `public/styles.css`, `public/app.js`).
+     - Swagger UI OpenAPI dokumentáció (`/api-docs`).
+     - 7 darab lefutó Jest integrációs és unit teszt.
+
+4. **Prompt 4 (Git Beállítások Konfigurálása):**
+   - **Kérés:** `a git config-hoz használd az 'ilonkasallaiszoreny' felhasználó nevet és user.email 'ilonka.szoreny@student.ms.sapientia.ro'`
+   - **AI Tevékenység & Válasz:** Beállította a Git név és e-mail identitást, majd 6 elkülönülő MVP commit-ba rendezte a projekt történetét.
+
+5. **Prompt 5 (GitHub Repository Összekötés):**
+   - **Kérés:** `itt az URL: https://github.com/ilonkasallaiszoreny/parkolohelyFoglalas.git`
+   - **AI Tevékenység & Válasz:** Összekötötte a helyi tárhelyet a GitHub távoli repóval (`git remote add origin`), átnevezte a fő ágat `main`-re és feltolta az összes commitot (`git push -u origin main`).
+
+6. **Prompt 6 (Docker Hibadiagnosztika & Kompatibilitási Javítás):**
+   - **Kérés:** *(Felhasználó elakadási naplója Docker elindításakor: Prisma OpenSSL/musl könyvtár hiány hiba Alpine Linux alatt)*
+   - **AI Tevékenység & Válasz:** Az AI azonosította, hogy az Alpine Linux alatt a Prisma motor nem tudja inicializálni az OpenSSL-t. Kicserélte a Docker alapképfájlt `node:24-slim`-re (Debian alap), frissítette a `prisma/schema.prisma` `binaryTargets` mezőjét, megszüntette a duplikált `npm ci` hívásokat, és sikeresen lefuttatta a Docker képet.
+
+7. **Prompt 7 (Verziókezelési Útmutató és Dokumentáció Bővítés):**
+   - **Kérés:** `a dontesi_naplo.md 'AI-eszköz Használat és Prompt Export' részét bővítsed`
+   - **AI Tevékenység & Válasz:** Bővítette a `DONTESI_NAPLO.md` fájlt a teljes fejlesztési folyamat, a promptok, a döntések és a hibaelhárítások részletes dokumentációjával.
+
+---
+*Készült: 2026.08.06.*
+
