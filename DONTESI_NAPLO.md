@@ -70,6 +70,31 @@ Az AI eszközt párprogramozóként (Pair Programmer) használtuk a fejlesztési
    - **Kérés:** `a dontesi_naplo.md 'AI-eszköz Használat és Prompt Export' részét bővítsed`
    - **AI Tevékenység & Válasz:** Bővítette a `DONTESI_NAPLO.md` fájlt a teljes fejlesztési folyamat, a promptok, a döntések és a hibaelhárítások részletes dokumentációjával.
 
+8. **Prompt 8 (Rendszerterv Felülvizsgálata - Bug-mentesség & Teljesítmény):**
+   - **Kérés:** `a feladatnak ezt az elvárását ("Elvárás a megoldással szemben: legyen bug-mentes és törekedj jó teljesítményre...") vizsgáld felül mégagyszer`
+   - **AI Tevékenység & Válasz:** Alaposan kibővítette a `RENDSZERTERV.md` dokumentumot a sorkizáró atomi tranzakciókezelés, zárt matematikai átfedés-szűrés és B-Tree indexeléssel elért `$O(\log N)$` lekérdezési teljesítmény részleteivel.
+
+9. **Prompt 9 (Manuális Dockerfile OpenSSL Javítás Reflexiója):**
+   - **Kérés:** `írd le ahova kell, hogy az egyik probléma amibe ütköztem az az volt, hogy a kód generáló hibát követett el a dockerfile generálásánál...`
+   - **AI Tevékenység & Válasz:** Beépítette a reflexiót a `DONTESI_NAPLO.md` 2. és 3. szekciójába.
+
+10. **Prompt 10 (Nyers Beszélgetés Export GitHub-ra):**
+    - **Kérés:** `ennek a beszélgetésnek a nyers exportját is tedd fel githubra`
+    - **AI Tevékenység & Válasz:** Kimásolta a `transcript_full.jsonl` gépi transzkriptet `ai-prompt-history-raw.jsonl` néven, elkészítette az `AI_PROMPT_HISTORY.md` jegyzőkönyvet, és feltolta őket a GitHub repóba.
+
+11. **Prompt 11 (Konkrét Parkolóhely Foglalásainak Lekérdezése):**
+    - **Kérés:** `ezt a funkcionalitást nem találtam meg: lekérdezhetővé teszi egy adott parkolóhely foglalásait,`
+    - **AI Tevékenység & Válasz:** Készített egy dedikált `GET /api/spots/:id/reservations` REST API végpontot, kibővítette a Web UI Dashboard-ot parkolóhely szűrővel és `📋 Foglalások` gombbal, elhelyezte a Swagger leírásban és írt hozzá integrációs Jest tesztet.
+
+12. **Prompt 12 (Legördülő Menü Sötét Téma Esztétikai Javítása):**
+    - **Kérés:** `az legördülő menü listák esztétikai hibát tartalmaznak. Dark témát használ az oldal... de a legördülő menük háttere fehér amin eltünnek a fehér betűk`
+    - **AI Tevékenység & Válasz:** Beállította az explicit sötét háttérszínt (`#161b22`) és világos betűszínt (`#f3f4f6`) a `select option` elemekre a `public/styles.css` fájlban.
+
+13. **Prompt 13 (Transzkript és Naplók Legfrissebb Szinkronizálása):**
+    - **Kérés:** `az ai prompt historyt, a dontesi naplot és az ai prompt history raw-t frissítsd`
+    - **AI Tevékenység & Válasz:** Frissítette a `ai-prompt-history-raw.jsonl`, `AI_PROMPT_HISTORY.md` és `DONTESI_NAPLO.md` fájlokat a legutolsó lépésekkel, majd feltolta a frissítést a GitHub-ra.
+
 ---
-*Készült: 2026.08.06.*
+*Készült: 2026.08.07.*
+
 

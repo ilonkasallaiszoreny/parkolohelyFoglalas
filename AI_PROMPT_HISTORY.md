@@ -1,6 +1,6 @@
 # AI Prompt History (Nyers Export és Interakciós Jegyzőkönyv)
 
-Ez a fájl tartalmazza a fejlesztés során lefolytatott teljes AI beszélgetés nyers exportját és strukturált jegyzőkönyvét.
+Ez a fájl tartalmazza a fejlesztés során lefolytatott teljes AI beszélgetés naprakész nyers exportját és strukturált jegyzőkönyvét.
 A teljes gépi JSONL transzkript megtalálható a [`ai-prompt-history-raw.jsonl`](ai-prompt-history-raw.jsonl) fájlban.
 
 ---
@@ -15,7 +15,7 @@ A teljes gépi JSONL transzkript megtalálható a [`ai-prompt-history-raw.jsonl`
 - **User:** `igen. Let's do it!`
 - **AI:** Ellenőrizte a helyi környezetet (Node.js, Docker, Python, Git), majd választási opciókat ajánlott fel a technológiai stackhez.
 - **User:** `(Recommended) Node.js + TypeScript (Express, Prisma/SQLite, Jest, Docker, Web UI & Swagger)`
-- **AI:** Inicializálta a `package.json`-t, felépítette a Prisma SQLite sémát, elkészítette a `SpotService` és `ReservationService` modulokat lefedve az atomikus tranzakciós ütközésvizsgálatot (`(start < existing.end) AND (end > existing.start)`), megírta az Express kontrollereket, felépítette a dark mode Web UI Dashboard-ot és a Swagger API leírást (`/api-docs`), valamint elkészítette az 7 tesztből álló Jest integrációs tesztcsomagot.
+- **AI:** Inicializálta a `package.json`-t, felépítette a Prisma SQLite sémát, elkészítette a `SpotService` és `ReservationService` modulokat lefedve az atomikus tranzakciós ütközésvizsgálatot (`(start < existing.end) AND (end > existing.start)`), megírta az Express kontrollereket, felépítette a dark mode Web UI Dashboard-ot és a Swagger API leírást (`/api-docs`), valamint elkészítette a 7 tesztből álló Jest integrációs tesztcsomagot.
 
 ### 3. Git identitás beállítása
 - **User:** `a git config-hoz használd az 'ilonkasallaiszoreny' felhasználó nevet és user.email 'ilonka.szoreny@student.ms.sapientia.ro'`
@@ -42,7 +42,7 @@ A teljes gépi JSONL transzkript megtalálható a [`ai-prompt-history-raw.jsonl`
 
 ### 8. Rendszerterv felülvizsgálata (Bug-mentesség & Teljesítmény)
 - **User:** `a feladatnak ezt az elvárását ("Elvárás a megoldással szemben: legyen bug-mentes és törekedj jó teljesítményre...") vizsgáld felül mégagyszer`
-- **AI:** Alaposan kibővítette a `RENDSZERTERV.md` dokumentumot, részletezve a bug-mentességet (atomi tranzakciókezelés, zárt matatematikai átfedés-szűrés, szigorú bementi validáció, hiba-middleware) és a teljesítmény optimalizációkat (B-Tree composite index `@@index([spotId, startTime, endTime, status])`, SQL pushdown, non-blocking I/O).
+- **AI:** Alaposan kibővítette a `RENDSZERTERV.md` dokumentumot, részletezve a bug-mentességet (atomi tranzakciókezelés, zárt matematikai átfedés-szűrés, szigorú bementi validáció, hiba-middleware) és a teljesítmény optimalizációkat (B-Tree composite index `@@index([spotId, startTime, endTime, status])`, SQL pushdown, non-blocking I/O).
 
 ### 9. Manuális Dockerfile hiba reflexiójának beszúrása
 - **User:** `írd le ahova kell, hogy az egyik probléma amibe ütköztem az az volt, hogy a kód generáló hibát követett el a dockerfile generálásánál, ami miatt manuálisan felül kellett vizsgáljam...`
@@ -51,3 +51,15 @@ A teljes gépi JSONL transzkript megtalálható a [`ai-prompt-history-raw.jsonl`
 ### 10. Nyers export elhelyezése GitHub-on
 - **User:** `ennek a beszélgetésnek a nyers exportját is tedd fel githubra`
 - **AI:** Kimásolta a rendszer által generált `transcript_full.jsonl` nyers transzkript fájlt `ai-prompt-history-raw.jsonl` néven, elkészítette az `AI_PROMPT_HISTORY.md` jegyzőkönyvet, és feltolta őket a GitHub repóba.
+
+### 11. Konkrét parkolóhely foglalásainak lekérdezési funkciója
+- **User:** `ezt a funkcionalitást nem találtam meg: lekérdezhetővé teszi egy adott parkolóhely foglalásait,`
+- **AI:** Készített egy dedikált `GET /api/spots/:id/reservations` REST API végpontot, kibővítette a Web UI Dashboard-ot egy parkolóhely szerinti szűrővel és a parkolóhely kártyákon elhelyezett `📋 Foglalások` gombbal, kibővítette a Swagger doksit, és hozzáadta az ehhez tartozó integrációs Jest tesztet.
+
+### 12. Legördülő menü sötét téma esztétikai javítása
+- **User:** `az legördülő menü listák esztétikai hibát tartalmaznak. Dark témát használ az oldal... de a legördülő menük háttere fehér amin eltünnek a fehér betűk`
+- **AI:** Módosította a `public/styles.css` stíluslapot, beállítva a `select option`, `.select-input option` és `.form-control option` elemekre az explicit sötét háttérszínt (`#161b22`) és a világos betűszínt (`#f3f4f6`).
+
+### 13. AI Prompt History, Döntési Napló és Nyers Export Frissítése
+- **User:** `az ai prompt historyt, a dontesi naplot és az ai prompt history raw-t frissítsd`
+- **AI:** Átmásolta a legfrissebb nyers transzkriptet az `ai-prompt-history-raw.jsonl` fájlba, frissítette az `AI_PROMPT_HISTORY.md` és `DONTESI_NAPLO.md` dokumentumokat, majd frissítette a fájlokat a GitHub repóban.
