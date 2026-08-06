@@ -16,6 +16,8 @@
 
 A megoldás során a legnagyobb kihívást az átfedő foglalási időintervallumok pontos, robusztus és versenyhelyzet-mentes kezelése jelentette. Ezt a matematikailag bizonyított `(start < existing.end) AND (end > existing.start)` logika adatbázis-szintű indexelt szűrésével és Prisma tranzakcióval sikerült tisztán felépíteni. Az alkalmazás szerkezete a Separation of Concerns elvet követi (Routes -> Controllers -> Services -> Prisma Database), így a kód könnyen tesztelhető Jest integrációs tesztekkel. A beépített Web Dashboard segítségével az alkalmazás azonnal, intuitív módon kipróbálható.
 
+Egy konkrét gyakorlati probléma, amibe a fejlesztés során ütköztem az volt, hogy a kód generáló hibát követett el a Dockerfile generálásánál, ami miatt manuálisan felül kellett vizsgáljam, hogy miért nem build-elődik le a szerver. A hibadiagnosztika során kiderült, hogy a Prisma adatbázis-motor futtatásához hiányoztak a szükséges OpenSSL könyvtárak a konténerben. Ennek javítására be kellett szúrjam a `RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*` sort a Dockerfájl builder stage részébe, valamint a `RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*` sort a production runner stage részébe. Ezt követően a `docker-compose up --build` már hiba nélkül elindította az alkalmazást.
+
 ---
 
 ## 3. AI-eszköz Használat és Prompt Export
@@ -56,9 +58,9 @@ Az AI eszközt párprogramozóként (Pair Programmer) használtuk a fejlesztési
    - **Kérés:** `itt az URL: https://github.com/ilonkasallaiszoreny/parkolohelyFoglalas.git`
    - **AI Tevékenység & Válasz:** Összekötötte a helyi tárhelyet a GitHub távoli repóval (`git remote add origin`), átnevezte a fő ágat `main`-re és feltolta az összes commitot (`git push -u origin main`).
 
-6. **Prompt 6 (Docker Hibadiagnosztika & Kompatibilitási Javítás):**
-   - **Kérés:** *(Felhasználó elakadási naplója Docker elindításakor: Prisma OpenSSL/musl könyvtár hiány hiba Alpine Linux alatt)*
-   - **AI Tevékenység & Válasz:** Az AI azonosította, hogy az Alpine Linux alatt a Prisma motor nem tudja inicializálni az OpenSSL-t. Kicserélte a Docker alapképfájlt `node:24-slim`-re (Debian alap), frissítette a `prisma/schema.prisma` `binaryTargets` mezőjét, megszüntette a duplikált `npm ci` hívásokat, és sikeresen lefuttatta a Docker képet.
+6. **Prompt 6 (Docker Hibadiagnosztika & Manuális Dockerfile Javítás):**
+   - **Probléma & Kérés:** A kód generáló hibát követett el a Dockerfile generálásánál, ami miatt felül kellett vizsgálni, miért nem build-elődik le a szerver (Prisma OpenSSL motor hiány).
+   - **Megoldás:** Be kellett szúrni a `RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*` sort a Dockerfile builder részébe, valamint a `RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*` sort a production runner stage részébe, valamint átállni a stabil `node:24-slim` alapképfájlra.
 
 7. **Prompt 7 (Verziókezelési Útmutató és Dokumentáció Bővítés):**
    - **Kérés:** `a dontesi_naplo.md 'AI-eszköz Használat és Prompt Export' részét bővítsed`
