@@ -25,6 +25,10 @@ Egy konkrét gyakorlati probléma, amibe a fejlesztés során ütköztem az volt
 ### Alkalmazott AI eszköz:
 - **Google Antigravity AI Agent (Gemini 3.6 Flash / Pro)**
 
+### Nyers Export Fájlok a Repóban:
+- 📄 Nyers JSONL Transzkript Export: [`ai-prompt-history-raw.jsonl`](ai-prompt-history-raw.jsonl)
+- 📄 Strukturált Prompt Jegyzőkönyv: [`AI_PROMPT_HISTORY.md`](AI_PROMPT_HISTORY.md)
+
 ### Az AI asszisztens szerepe és integrációja a fejlesztésbe:
 Az AI eszközt párprogramozóként (Pair Programmer) használtuk a fejlesztési folyamat során. Az AI felelt a projekt vázának felépítéséért, a típusbiztos architektúra tervezéséért, a Docker konténerizációért, az automatizált Jest tesztek megírásáért, valamint a felmerülő kompatibilitási és rendszer-hibák diagnosztizálásáért és javításáért.
 
